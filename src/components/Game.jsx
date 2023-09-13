@@ -34,6 +34,11 @@ const Game = () => {
               background-color: rgb(177, 253, 253);
               text-align: center;
             }
+            h2 {
+              background-color: yellow;
+              padding: 2px 3px 2px 3px;
+              border: 2px solid black;
+            }
             .container{
               width: 100%
             }
@@ -41,24 +46,65 @@ const Game = () => {
               border: 2px solid black;
               background-color: #fff;
             }
+            .score {
+              display: flex;
+              justify-content: space-around;
+              align=items: center;
+            } 
           </style>
           <body>
             <div class="container">
-              <canvas id="mirroredCanvas" width="700" height="400"></canvas>
+              <div class="score">
+                <div>
+                  <h3>Team A Score:</h3>
+                  <h2 id="mirrorTeamA"></h2>
+                </div>
+                <div>
+                  <h1 id="mirrorTimer"></h1>
+                </div>
+                <div>
+                  <h3>Team B Score: </h3>
+                  <h2 id="mirrorTeamB"></h2>
+                </div>
+              </div>
+              <canvas id="mirroredCanvas" width="900" height="400"></canvas>
             </div>
             <script>
               const mirroredCanvas = document.getElementById('mirroredCanvas');
+              const mirroredTeamA = document.getElementById("mirrorTeamA")
+              const mirroredTeamB = document.getElementById("mirrorTeamB")
+              const mirroredTimer = document.getElementById("mirrorTimer")
               const parentWindow = window.opener;
               const parentCanvas = parentWindow.document.querySelector('canvas');
+              const parentTeamA = parentWindow.document.getElementById('teamA');
+              const parentTeamB = parentWindow.document.getElementById('teamB');
+              const parentTimer = parentWindow.document.getElementById('timer');
 
               const ctx = mirroredCanvas.getContext('2d');
+
+              
+
+              const mirrorTeamAScore = () => {
+                mirroredTeamA.innerHTML=parentTeamA.innerHTML
+                requestAnimationFrame(mirrorTeamAScore)
+              }
+              const mirrorTeamBScore = () => {
+                mirroredTeamB.innerHTML=parentTeamB.innerHTML
+                requestAnimationFrame(mirrorTeamBScore)
+              }
+              const mirrorTimer = () => {
+                mirroredTimer.innerHTML=parentTimer.innerHTML
+                requestAnimationFrame(mirrorTimer)
+              }
 
               const mirrorDrawing = () => {
                 ctx.clearRect(0, 0, mirroredCanvas.width, mirroredCanvas.height);
                 ctx.drawImage(parentCanvas, 0, 0);
                 requestAnimationFrame(mirrorDrawing);
               };
-
+              mirrorTeamAScore();
+              mirrorTeamBScore();
+              mirrorTimer();
               mirrorDrawing();
             </script>
           </body>
@@ -138,7 +184,7 @@ const Game = () => {
  }
 
  const handleMouseDown = () => {
-  if(seconds === 0){
+  if(seconds === 0 || seconds === 45){
     return
   }
   const canvas = canvasRef.current;
@@ -172,16 +218,16 @@ const handleMouseMove = (e) => {
       <div className=" flex justify-around pb-3">
         <div>
           <h2>Team A Score :</h2>
-          <h3 className="text-4xl py-2">{teamAScore}</h3>
-          <button disabled={isActive} onClick={handleTeamAScore} className=" bg-yellow-300 px-4 py-1 border-2 border-black">+ 1</button>
+          <h3 id="teamA" className="text-4xl py-2">{teamAScore}</h3>
+          <button  disabled={isActive} onClick={handleTeamAScore} className=" bg-yellow-300 px-4 py-1 border-2 border-black">+ 1</button>
         </div>
         <div className="flex">
-          <h1 className=" px-4 text-3xl">Timer: {seconds}</h1>
+          <h1 id="timer" className=" px-4 text-3xl">Timer: {seconds}</h1>
           <Button handler={startTimer} dis={isActive} color='bg-green-500 px-3 py-2 border-2 border-black' name="Start" />
         </div>
         <div>
           <h2>Team B Score:</h2>
-          <h3 className="text-4xl py-2">{teamBScore}</h3>
+          <h3 id="teamB" className="text-4xl py-2">{teamBScore}</h3>
           <button disabled={isActive} onClick={handleTeamBScore} className=" bg-yellow-300 px-4 py-1 border-2 border-black" > + 1 </button>
         </div>
       </div>
@@ -190,13 +236,9 @@ const handleMouseMove = (e) => {
           <div><button onClick={openNewTab}>Game Window</button></div>
           <CirclePicker onChange={handleColorChange} />
           <div>
-            <h2>Size</h2>
-            <div>
-            <input type="range" />
-            </div>
-            <button className=" border-2 border-white text-white bg-red-950 py-2 px-3 text-2xl uppercase" onClick={resetCanvas} disabled={reset}>reset</button>
+            <button className=" border-2 border-white text-white bg-red-950 py-2 my-2 px-3 text-2xl uppercase" onClick={resetCanvas} disabled={reset}>reset</button>
             <h2 className=" border-2 border-black text-center p-4 my-2 bg-white text-bold text-2xl text uppercase">{word === ""? "Click Generate New Word" : word}</h2>
-            <button className=" bg-green-300 text-xl border-2 border-black text-white py-2 px-3" disabled={disable}  onClick={generateWord}>Generate</button>
+            <button className=" bg-green-300 text-xl border-2 border-black text-black py-2 px-3" disabled={disable}  onClick={generateWord}>Generate</button>
             <ul className="flex justify-center">
               {list.map((index, word) => (
                 <li className="px-3 mt-2 text-2xl text uppercase" key={index}>{list[word]}</li>
@@ -208,11 +250,11 @@ const handleMouseMove = (e) => {
           <canvas
             ref={canvasRef}
             className=" border-2 border-black bg-white"
-            width={700}
+            width={900}
             height={400}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
+            onPointerDown={handleMouseDown}
+            onPointerUp={handleMouseUp}
+            onPointerMove={handleMouseMove}
           ></canvas>
         </div>
       </div>     
