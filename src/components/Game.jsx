@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 import Button from "./Button";
 import words from "../games/english/game_0.json"
+import Holloween from "../games/english/holloween.json"
 import { CirclePicker } from "react-color";
 
 const Game = () => {
@@ -119,7 +120,7 @@ const Game = () => {
   
 
   useEffect(() => {
-    setData(words.words)
+    setData(Holloween.words)
   },[])
  
   function generateWord(){
