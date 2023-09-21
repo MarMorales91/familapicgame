@@ -116,11 +116,11 @@ const Game = () => {
 
 
 
-
+  
   
 
   useEffect(() => {
-    setData(Holloween.words)
+    setData(words.words)
   },[])
  
   function generateWord(){
