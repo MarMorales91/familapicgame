@@ -24,7 +24,7 @@ const Game = () => {
 
 
 
-  const colors = ['#b71c1c', '#1a237e','#ffeb3b','#4caf50' ,'#ff5722','#9c27b0', '#000000']
+  const colors = ['#b71c1c', '#03a9f4','#ffeb3b','#4caf50' ,'#ff5722','#ba68c8', '#000000']
 
 
 
@@ -74,7 +74,7 @@ const Game = () => {
                   <h2 id="mirrorTeamB"></h2>
                 </div>
               </div>
-              <canvas id="mirroredCanvas" width="900" height="500"></canvas>
+              <canvas id="mirroredCanvas" width="1000" height="400"></canvas>
             </div>
             <script>
               const mirroredCanvas = document.getElementById('mirroredCanvas');
@@ -126,7 +126,7 @@ const Game = () => {
   
 
   useEffect(() => {
-    setData(words.words)
+    setData(Holloween.words)
   },[])
  
   function generateWord(){
@@ -188,7 +188,7 @@ const Game = () => {
     setWord('')
     setShowWord([])
     setColor("#000000")
-    setSeconds(45)
+    setSeconds(time)
 
 // this filter method removes words from data that are added initially to list array when we generate a word. 
 
@@ -241,8 +241,6 @@ const handleMouseMove = (e) => {
           <button  disabled={isActive} onClick={handleTeamAScore} className=" bg-yellow-300 px-4 py-1 border-2 border-black">+ 1</button>
         </div>
         <div>
-          
-          
           <h1 id="timer" className=" px-4 text-3xl">Timer: {seconds}</h1>
           <div className=" flex pt-3">
             <Button handler={startTimer} dis={isActive} color=' text-white bg-green-800 text-xl px-3 py-2 border-2 border-black' name="START" />
@@ -260,23 +258,25 @@ const handleMouseMove = (e) => {
         <ul className=" flex">
           {showWord.length === 0 ? <li className="text-2xl uppercase py-2">Ready?</li> : 
             showWord.map((index, word) => (
-              <li className="px-3 mt-2 text-2xl text uppercase py-2" key={index}>{showWord[word]}</li>
+              <li className="text-2xl text uppercase py-2 px-3" key={index}>{showWord[word]}</li>
             ))}
         </ul>
       </div>
-      <div className=" w-[100%]">
-        <div className=" w-[90%] m-auto relative">
+      <div className=" w-[100%] flex justify-center">
+        <div className="relative">
+
           <canvas
             ref={canvasRef}
             className=" border-2 border-black bg-white"
-            width={900}
-            height={500}
+            width={1000}
+            height={400}
             onPointerDown={handleMouseDown}
             onPointerUp={handleMouseUp}
             onPointerMove={handleMouseMove}
             ></canvas>
           <CirclePicker className=" absolute top-0 left-3 pt-3" colors={colors} width="300px" onChange={handleColorChange} />
         </div>
+        
       </div>
       <div>
         <button disabled={isActive} className=" bg-green-200  py-3 px-4 mt-2" onClick={openNewTab}>Game Window</button>
