@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 import Button from "./Button";
 import words from "../games/english/game_0.json"
+import spanish from "../games/spanish/game_0.json"
 import Holloween from "../games/english/holloween.json"
 import { CirclePicker } from "react-color";
 
@@ -21,8 +22,6 @@ const Game = () => {
   const [teamAScore, setTeamAScore] = useState(0)
   const [teamBScore, setTeamBScore] = useState(0)
   const [showWord, setShowWord] = useState([])
-
-
 
   const colors = ['#b71c1c', '#03a9f4','#ffeb3b','#4caf50' ,'#ff5722','#ba68c8', '#000000']
 
@@ -126,7 +125,7 @@ const Game = () => {
   
 
   useEffect(() => {
-    setData(Holloween.words)
+    setData(spanish.palabras)
   },[])
  
   function generateWord(){
@@ -140,6 +139,7 @@ const Game = () => {
       setReset(true)
     }
   }
+
 
 
   
@@ -159,12 +159,20 @@ const Game = () => {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
+  
+
 
 
 // Start TImer State
   const startTimer = () => {
     setIsActive(true);
   };
+
+// Stop TImer
+const endTImer = () =>{
+  setIsActive(false);
+  setReset(false)
+}
 
 // Team A Score State
   function handleTeamAScore() {
@@ -254,7 +262,8 @@ const handleMouseMove = (e) => {
         </div>
       </div>
       <div className=" flex justify-center mb-2">
-        <button className=" bg-green-300 text-xl border-2 border-black text-black py-2 px-3 mr-3" disabled={disable}  onClick={generateWord}>Generate</button>
+        {seconds < 30? <Button handler={endTImer} dis={!isActive} color=' text-white bg-blue-800 text-xl px-3 py-2 border-2 border-black' name="Complete" /> : 
+        <button className=" bg-green-300 text-xl border-2 border-black text-black py-2 px-3 mr-3" disabled={disable}  onClick={generateWord}>Generate</button>}
         <ul className=" flex">
           {showWord.length === 0 ? <li className="text-2xl uppercase py-2">Ready?</li> : 
             showWord.map((index, word) => (
