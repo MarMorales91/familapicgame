@@ -125,7 +125,7 @@ const Game = () => {
   
 
   useEffect(() => {
-    setData(spanish.palabras)
+    setData(words.words)
   },[])
  
   function generateWord(){
@@ -270,6 +270,7 @@ const handleMouseMove = (e) => {
               <li className="text-2xl text uppercase py-2 px-3" key={index}>{showWord[word]}</li>
             ))}
         </ul>
+        <div></div>
       </div>
       <div className=" w-[100%] flex justify-center">
         <div className="relative">
